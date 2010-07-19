@@ -13,7 +13,7 @@ Tasks.assignmentsRedrawNeeded = false;
 Tasks.sourcesRedrawNeeded = false;
 
 Tasks.main = function main() {
-
+  
   // console.log('DEBUG: "Tasks" started at: %@'.fmt(new Date()));
   Tasks.registerRoutes();
   

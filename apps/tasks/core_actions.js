@@ -87,13 +87,24 @@ Tasks.mixin({
    * Load all Tasks data from the server.
    */
   loadData: function() {
+    // JSONP data loading
+    console.log('About to load user hashes');
+    var data = window.data;
+    if(data) {
+      console.log('Loading user hashes');
+      SC.RunLoop.begin();
+      CoreTasks.store.loadRecords(CoreTasks.User, data);
+      SC.RunLoop.end();
+      // window.data = null;
+    }
+
     // console.log('DEBUG: loadData()');
     // Start by loading all users.
     var serverMessage = Tasks.getPath('mainPage.mainPane.serverMessage');
     serverMessage.set('icon', 'progress-icon');
     serverMessage.set('value', "_LoadingUsers".loc());
     if (!CoreTasks.get('allUsers')) {
-      CoreTasks.set('allUsers', CoreTasks.store.find(SC.Query.create({ recordType: CoreTasks.User, orderBy: 'name' })));
+      CoreTasks.set('allUsers', CoreTasks.store.find(SC.Query.create({ recordType: CoreTasks.User, orderBy: 'name', initialServerFetch: NO })));
       this.usersController.set('content', CoreTasks.get('allUsers'));
     } else {
       CoreTasks.get('allUsers').refresh();
